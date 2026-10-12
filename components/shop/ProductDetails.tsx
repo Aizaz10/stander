@@ -38,15 +38,19 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 items-start">
         {/* Images */}
         <div className="space-y-4">
-          <div className="aspect-square bg-gray-50 rounded-2xl flex items-center justify-center p-12 overflow-hidden border border-gray-100">
+          <div className="aspect-[4/3] max-h-[320px] lg:max-h-[480px] w-full bg-gray-50 rounded-xl flex items-center justify-center p-6 lg:p-8 overflow-hidden border border-gray-100">
             {product.images && product.images.length > 0 ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover rounded-xl" />
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                className="w-full h-full max-h-[320px] lg:max-h-[480px] object-contain rounded-xl"
+              />
             ) : (
-              <div className="w-48 h-48 bg-gray-200 rounded-xl animate-pulse" />
+              <div className="w-32 h-32 bg-gray-200 rounded-xl animate-pulse" />
             )}
           </div>
           {product.images && product.images.length > 1 && (
@@ -62,7 +66,7 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
         </div>
 
         {/* Details */}
-        <div className="flex flex-col">
+        <div className="flex flex-col lg:sticky lg:top-24 self-start">
           <div className="mb-2">
             <span className="text-sm font-medium text-primary bg-primary-light px-3 py-1 rounded-full">
               {product.categories?.name || 'Uncategorized'}
@@ -85,12 +89,12 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
             )}
           </div>
 
-          <div className="prose prose-sm text-gray-600 mb-8 max-w-none whitespace-pre-wrap">
+          <div className="prose prose-sm text-gray-600 mb-6 max-w-none whitespace-pre-wrap">
             <p>{product.description || "No description available."}</p>
           </div>
 
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="mb-6">
+            <div className="flex items-center gap-2">
               <span className={`w-3 h-3 rounded-full ${
                 (product.stock ?? 0) > 5 ? 'bg-green-500' : 
                 (product.stock ?? 0) > 0 ? 'bg-orange-500' : 
@@ -104,7 +108,7 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
             </div>
           </div>
 
-          <div className="mt-auto space-y-4 border-t border-gray-100 pt-8">
+          <div className="border-t border-gray-100 pt-6">
             <AddToCartButton product={product} />
           </div>
         </div>
