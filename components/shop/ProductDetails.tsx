@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { formatPrice } from "@/lib/utils";
 
 export default async function ProductDetails({ paramsPromise }: { paramsPromise: Promise<{ slug: string }> }) {
   await connection();
@@ -80,10 +81,10 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
           )}
 
           <div className="flex items-end gap-4 mb-6">
-            <span className="text-4xl font-bold text-gray-900">${product.price}</span>
+            <span className="text-4xl font-bold text-gray-900">{formatPrice(product.price)}</span>
             {product.compare_at_price && (
               <>
-                <span className="text-xl text-gray-400 line-through mb-1">${product.compare_at_price}</span>
+                <span className="text-xl text-gray-400 line-through mb-1">{formatPrice(product.compare_at_price)}</span>
                 <Badge className="bg-red-500 mb-2">{discountPercent}% OFF</Badge>
               </>
             )}
@@ -143,9 +144,9 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
                     <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-1">{p.name}</h3>
                     <div className="flex items-center justify-between mt-auto">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-lg">${p.price}</span>
+                        <span className="font-bold text-lg">{formatPrice(p.price)}</span>
                         {p.compare_at_price && (
-                          <span className="text-sm text-gray-400 line-through">${p.compare_at_price}</span>
+                          <span className="text-sm text-gray-400 line-through">{formatPrice(p.compare_at_price)}</span>
                         )}
                       </div>
                       <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transition-opacity">Add</Button>

@@ -16,7 +16,7 @@ export default function ShippingReturnsPage() {
           Shipping & Returns
         </h1>
         <p className="text-gray-500 text-base">
-          Transparent shipping timelines, complimentary standard delivery, and a hassle-free 30-day return guarantee.
+          Transparent shipping timelines, free delivery on orders above Rs. 5,000, and a hassle-free 30-day return guarantee.
         </p>
       </div>
 
@@ -37,21 +37,21 @@ export default function ShippingReturnsPage() {
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
               <span className="text-xs font-semibold text-primary uppercase tracking-wider">Most Popular</span>
               <h3 className="font-bold text-gray-900 mt-1">Standard Delivery</h3>
-              <p className="text-2xl font-extrabold text-green-600 my-2">Free</p>
-              <p className="text-xs text-gray-500">Delivered within 3–5 business days</p>
+              <p className="text-2xl font-extrabold text-green-600 my-2">Free*</p>
+              <p className="text-xs text-gray-500">Free above Rs. 5,000, otherwise Rs. 250. Delivered within 3–5 business days</p>
             </div>
 
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Fast</span>
               <h3 className="font-bold text-gray-900 mt-1">Express Delivery</h3>
-              <p className="text-2xl font-extrabold text-gray-900 my-2">$9.99</p>
+              <p className="text-2xl font-extrabold text-gray-900 my-2">Rs. 500</p>
               <p className="text-xs text-gray-500">Delivered within 1–2 business days</p>
             </div>
 
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Urgent</span>
               <h3 className="font-bold text-gray-900 mt-1">Priority Overnight</h3>
-              <p className="text-2xl font-extrabold text-gray-900 my-2">$19.99</p>
+              <p className="text-2xl font-extrabold text-gray-900 my-2">Rs. 1,000</p>
               <p className="text-xs text-gray-500">Next business day guaranteed</p>
             </div>
           </div>

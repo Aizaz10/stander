@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
+import { formatPrice } from "@/lib/utils";
 
 export default async function TrendingProducts() {
   await connection();
@@ -41,7 +42,7 @@ export default async function TrendingProducts() {
               <p className="text-sm text-gray-500 mb-1">{product.categories?.name || 'Uncategorized'}</p>
               <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-1">{product.name}</h3>
               <div className="flex items-center justify-between mt-auto">
-                <span className="font-bold text-lg">${product.price}</span>
+                <span className="font-bold text-lg">{formatPrice(product.price)}</span>
                 <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transition-opacity">Add</Button>
               </div>
             </div>

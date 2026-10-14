@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import { Package, ShoppingBag, DollarSign, Clock } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -67,7 +68,7 @@ async function DashboardContent() {
           <div className="flex justify-between items-start mb-4">
             <div>
               <p className="text-gray-500 font-medium text-sm mb-1">Total Revenue</p>
-              <h3 className="text-3xl font-bold">${totalRevenue.toFixed(2)}</h3>
+              <h3 className="text-3xl font-bold">{formatPrice(totalRevenue)}</h3>
             </div>
             <div className="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
               <DollarSign className="w-5 h-5" />
@@ -154,7 +155,7 @@ async function DashboardContent() {
                             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                           </Badge>
                         </td>
-                        <td className="px-6 py-4 text-right font-bold text-gray-900">${order.total?.toFixed(2)}</td>
+                        <td className="px-6 py-4 text-right font-bold text-gray-900">{formatPrice(order.total)}</td>
                         <td className="px-6 py-4 text-right">
                           <Link href={`/admin/orders/${order.id}`} className="text-primary hover:underline text-xs font-medium">
                             View →

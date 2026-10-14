@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { OrderFilters, OrderFiltersSkeleton } from "@/components/admin/OrderFilters";
+import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Orders Management",
@@ -141,7 +142,7 @@ async function OrdersList({
                         {itemsCount} {itemsCount === 1 ? "item" : "items"}
                       </td>
                       <td className="px-6 py-4 font-bold text-gray-900">
-                        ${order.total?.toFixed(2)}
+                        {formatPrice(order.total)}
                       </td>
                       <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
                       <td className="px-6 py-4 text-gray-500">

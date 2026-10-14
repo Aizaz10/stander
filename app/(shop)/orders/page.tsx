@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "My Orders",
@@ -69,7 +70,7 @@ async function OrdersList() {
                 </p>
               </div>
               <div className="text-left sm:text-right">
-                <span className="font-bold text-lg">${order.total?.toFixed(2)}</span>
+                <span className="font-bold text-lg">{formatPrice(order.total)}</span>
               </div>
             </Card>
           </Link>

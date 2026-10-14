@@ -22,7 +22,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Is shipping free?",
-        a: "Yes! We offer free standard shipping on all orders with no minimum purchase requirement.",
+        a: "Yes! We offer free standard delivery on all orders above Rs. 5,000. For orders below Rs. 5,000, standard shipping is Rs. 250.",
       },
     ],
   },

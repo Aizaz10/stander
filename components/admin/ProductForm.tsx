@@ -223,12 +223,12 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
             <h2 className="font-bold text-lg mb-4">Pricing & Inventory</h2>
             
             <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">Price *</label>
+              <label className="text-sm font-medium text-gray-700">Price (Rs.) *</label>
               <Input name="price" type="number" step="0.01" min="0" required defaultValue={initialData?.price} placeholder="0.00" />
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700">Compare at Price</label>
+              <label className="text-sm font-medium text-gray-700">Compare at price (Rs.)</label>
               <Input name="compare_at_price" type="number" step="0.01" min="0" defaultValue={initialData?.compare_at_price} placeholder="0.00" />
             </div>
 

@@ -84,11 +84,11 @@ export function ShopFilters() {
       </div>
 
       <div>
-        <h3 className="font-semibold mb-4 text-gray-900">Price Range</h3>
+        <h3 className="font-semibold mb-4 text-gray-900">Price Range (Rs.)</h3>
         <div className="flex items-center gap-2 mb-4">
           <Input
             type="number"
-            placeholder="Min"
+            placeholder="Min (Rs.)"
             value={min}
             onChange={(e) => setMin(e.target.value)}
             className="w-full"
@@ -96,7 +96,7 @@ export function ShopFilters() {
           <span className="text-gray-500">-</span>
           <Input
             type="number"
-            placeholder="Max"
+            placeholder="Max (Rs.)"
             value={max}
             onChange={(e) => setMax(e.target.value)}
             className="w-full"

@@ -8,6 +8,7 @@ import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package } from "l
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { OrderStatusUpdater } from "@/components/admin/OrderStatusUpdater";
+import { formatPrice } from "@/lib/utils";
 
 interface OrderItem {
   id: string;
@@ -134,13 +135,13 @@ async function OrderDetailContent({ id }: { id: string }) {
                           {item.product_name}
                         </td>
                         <td className="px-6 py-4 text-right text-gray-600">
-                          ${item.price?.toFixed(2)}
+                          {formatPrice(item.price)}
                         </td>
                         <td className="px-6 py-4 text-center text-gray-900 font-medium">
                           {item.quantity}
                         </td>
                         <td className="px-6 py-4 text-right font-bold text-gray-900">
-                          ${lineTotal.toFixed(2)}
+                          {formatPrice(lineTotal)}
                         </td>
                       </tr>
                     );
@@ -153,7 +154,7 @@ async function OrderDetailContent({ id }: { id: string }) {
             <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
               <span className="text-base font-bold text-gray-700">Order Total</span>
               <span className="text-2xl font-bold text-primary">
-                ${order.total?.toFixed(2)}
+                {formatPrice(order.total)}
               </span>
             </div>
           </Card>

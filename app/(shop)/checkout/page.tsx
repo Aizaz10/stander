@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { placeOrderAction } from "./actions";
+import { formatPrice } from "@/lib/utils";
 
 const emptySubscribe = () => () => {};
 
@@ -141,7 +142,7 @@ export default function CheckoutPage() {
                   <div className="flex-1 text-sm">
                     <p className="font-medium text-gray-900 line-clamp-2">{item.name}</p>
                     <p className="text-gray-500">Qty: {item.quantity}</p>
-                    <p className="font-medium mt-1">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium mt-1">{formatPrice(item.price * item.quantity)}</p>
                   </div>
                 </div>
               ))}
@@ -152,7 +153,7 @@ export default function CheckoutPage() {
             <div className="space-y-4 text-sm mb-6">
               <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
-                <span className="font-medium text-gray-900">${subtotal.toFixed(2)}</span>
+                <span className="font-medium text-gray-900">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>Shipping</span>
@@ -164,7 +165,7 @@ export default function CheckoutPage() {
             
             <div className="flex justify-between items-end mb-8">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-bold text-3xl text-gray-900">${subtotal.toFixed(2)}</span>
+              <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
             </div>
             
             <Button 

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Trash2, Minus, Plus, ArrowRight } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 const emptySubscribe = () => () => {};
 
@@ -76,7 +77,7 @@ export default function CartPage() {
                     </button>
                   </div>
                   
-                  <div className="text-lg font-bold text-gray-900 mb-4">${item.price}</div>
+                  <div className="text-lg font-bold text-gray-900 mb-4">{formatPrice(item.price)}</div>
                   
                   <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center gap-3">
@@ -97,7 +98,7 @@ export default function CartPage() {
                     </div>
                     
                     <div className="font-semibold text-lg text-gray-900">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatPrice(item.price * item.quantity)}
                     </div>
                   </div>
                 </div>
@@ -114,7 +115,7 @@ export default function CartPage() {
             <div className="space-y-4 text-sm mb-6">
               <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
-                <span className="font-medium text-gray-900">${subtotal.toFixed(2)}</span>
+                <span className="font-medium text-gray-900">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>Shipping</span>
@@ -126,7 +127,7 @@ export default function CartPage() {
             
             <div className="flex justify-between items-end mb-8">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-bold text-3xl text-gray-900">${subtotal.toFixed(2)}</span>
+              <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
             </div>
             
             <Link href="/checkout" className="block">

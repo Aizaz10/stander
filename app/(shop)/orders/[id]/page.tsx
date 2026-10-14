@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 
 interface OrderItem {
   id: string;
@@ -110,14 +111,14 @@ async function OrderDetails({
                 <p className="text-gray-500 text-sm mt-1">Qty: {item.quantity}</p>
               </div>
               <div className="text-left sm:text-right font-medium">
-                ${(item.price * item.quantity).toFixed(2)}
+                {formatPrice(item.price * item.quantity)}
               </div>
             </div>
           ))}
         </div>
         <div className="p-6 bg-gray-50 flex justify-between items-center border-t border-gray-100">
           <span className="font-bold text-lg">Total</span>
-          <span className="font-bold text-2xl">${order.total?.toFixed(2)}</span>
+          <span className="font-bold text-2xl">{formatPrice(order.total)}</span>
         </div>
       </Card>
     </div>

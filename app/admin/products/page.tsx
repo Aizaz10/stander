@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Plus, Search, Edit2 } from "lucide-react";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
+import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Products Management",
@@ -64,7 +65,7 @@ async function ProductsList({ searchParamsPromise }: { searchParamsPromise: Prom
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-500">{product.categories?.name || '-'}</td>
-                  <td className="px-6 py-4 font-medium">${product.price.toFixed(2)}</td>
+                  <td className="px-6 py-4 font-medium">{formatPrice(product.price)}</td>
                   <td className="px-6 py-4">
                     <span className={product.stock <= 5 ? "text-red-600 font-bold" : "text-gray-900"}>
                       {product.stock}

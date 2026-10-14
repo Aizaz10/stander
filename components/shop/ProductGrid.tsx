@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
+import { formatPrice } from "@/lib/utils";
 
 interface ProductGridSearchParams {
   category?: string;
@@ -100,9 +101,9 @@ export default async function ProductGrid({
                 <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-1">{product.name}</h3>
                 <div className="flex items-center justify-between mt-auto">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">${product.price}</span>
+                    <span className="font-bold text-lg">{formatPrice(product.price)}</span>
                     {product.compare_at_price && (
-                      <span className="text-sm text-gray-400 line-through">${product.compare_at_price}</span>
+                      <span className="text-sm text-gray-400 line-through">{formatPrice(product.compare_at_price)}</span>
                     )}
                   </div>
                   <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transition-opacity">Add</Button>
