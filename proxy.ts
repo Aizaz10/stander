@@ -36,8 +36,7 @@ export async function proxy(request: NextRequest) {
   if (
     !user && 
     (url.pathname.startsWith('/admin') || 
-     url.pathname.startsWith('/orders') || 
-     url.pathname.startsWith('/checkout'))
+     url.pathname.startsWith('/orders'))
   ) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

@@ -54,13 +54,13 @@ async function OrdersList() {
   return (
     <div className="space-y-4">
       {orders.map((order) => {
-        const shortId = order.id.split('-')[0].toUpperCase();
+        const displayId = order.order_number || order.id.split('-')[0].toUpperCase();
         return (
           <Link key={order.id} href={`/orders/${order.id}`} className="block">
             <Card className="p-6 hover:shadow-md transition-shadow flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="font-bold">Order #{shortId}</span>
+                  <span className="font-bold">Order #{displayId}</span>
                   <Badge className={getStatusColor(order.status)}>
                     {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                   </Badge>

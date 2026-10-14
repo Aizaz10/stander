@@ -78,8 +78,11 @@ async function OrdersList({
 
   if (q) {
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(q);
+    const isNumber = /^\d+$/.test(q);
     if (isUuid) {
       query = query.or(`id.eq.${q},shipping_name.ilike.%${q}%`);
+    } else if (isNumber) {
+      query = query.or(`order_number.eq.${q},shipping_name.ilike.%${q}%`);
     } else {
       query = query.ilike("shipping_name", `%${q}%`);
     }
@@ -113,6 +116,7 @@ async function OrdersList({
               {orders && orders.length > 0 ? (
                 orders.map((order) => {
                   const shortId = order.id.split("-")[0].toUpperCase();
+                  const displayId = order.order_number || shortId;
                   const itemsCount =
                     order.order_items?.reduce(
                       (sum: number, it: { quantity?: number }) => sum + (it.quantity || 1),
@@ -126,11 +130,18 @@ async function OrdersList({
                           href={`/admin/orders/${order.id}`}
                           className="hover:text-primary transition-colors"
                         >
-                          #{shortId}
+                          #{displayId}
                         </Link>
                       </td>
                       <td className="px-6 py-4 font-medium text-gray-900">
-                        {order.shipping_name}
+                        <div className="flex items-center gap-2">
+                          <span>{order.shipping_name}</span>
+                          {!order.user_id && (
+                            <Badge className="bg-gray-100 text-gray-700 text-[10px] px-1.5 py-0.5 border-none">
+                              Guest
+                            </Badge>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-gray-600">
                         {order.shipping_phone || "-"}

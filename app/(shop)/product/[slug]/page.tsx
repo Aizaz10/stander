@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import ProductDetails from "@/components/shop/ProductDetails";
 import ProductLoading from "./loading";
 import { createClient } from "@/lib/supabase/server";
+import { connection } from "next/server";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  await connection();
   const { slug } = await params;
   try {
     const supabase = await createClient();

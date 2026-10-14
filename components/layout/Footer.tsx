@@ -35,6 +35,7 @@ export function Footer() {
         <div>
           <h4 className="font-semibold mb-4 text-foreground">Support</h4>
           <ul className="space-y-2 text-sm text-gray-500">
+            <li><Link href="/track-order" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">Track Order</Link></li>
             <li><Link href="/contact" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">Contact Us</Link></li>
             <li><Link href="/faq" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">FAQs</Link></li>
             <li><Link href="/shipping-returns" className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">Shipping Returns</Link></li>

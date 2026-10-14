@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package } from "lucide-react";
+import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package, Mail } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { OrderStatusUpdater } from "@/components/admin/OrderStatusUpdater";
@@ -22,12 +22,23 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const shortId = id.split("-")[0].toUpperCase();
-  return {
-    title: `Order #${shortId}`,
-    description: `Admin order management for #${shortId}.`,
-  };
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from("orders").select("order_number").eq("id", id).single();
+    const displayId = data?.order_number || id.split("-")[0].toUpperCase();
+    return {
+      title: `Order #${displayId}`,
+      description: `Admin order management for #${displayId}.`,
+    };
+  } catch {
+    const shortId = id.split("-")[0].toUpperCase();
+    return {
+      title: `Order #${shortId}`,
+      description: `Admin order management for #${shortId}.`,
+    };
+  }
 }
 
 function getStatusBadge(status: string) {
@@ -75,17 +86,23 @@ async function OrderDetailContent({ id }: { id: string }) {
   }
 
   const shortId = order.id.split("-")[0].toUpperCase();
+  const displayId = order.order_number || shortId;
 
   return (
     <div className="space-y-8">
       {/* Header Info */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
         <div>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
             <h1 className="text-2xl font-bold font-mono text-gray-900">
-              Order #{shortId}
+              Order #{displayId}
             </h1>
             {getStatusBadge(order.status)}
+            {!order.user_id && (
+              <Badge className="bg-gray-100 text-gray-700 text-xs px-2.5 py-0.5 border-none">
+                Guest Order
+              </Badge>
+            )}
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <Calendar className="w-4 h-4 text-gray-400" />
@@ -184,6 +201,16 @@ async function OrderDetailContent({ id }: { id: string }) {
                     <p className="font-medium text-gray-900">{order.shipping_phone || "-"}</p>
                   </div>
                 </div>
+
+                {order.guest_email && (
+                  <div className="flex items-start gap-2.5">
+                    <Mail className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-xs text-gray-400 uppercase font-medium">Guest Email</p>
+                      <p className="font-medium text-gray-900">{order.guest_email}</p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex items-start gap-2.5">
                   <MapPin className="w-4 h-4 text-gray-400 mt-0.5 shrink-0" />

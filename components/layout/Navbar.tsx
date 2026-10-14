@@ -2,7 +2,7 @@
 
 import { useCartStore } from "@/store/cartStore";
 import Link from 'next/link';
-import { Search, ShoppingCart, User, LogOut, Package, Settings, ChevronDown, Menu, X, HelpCircle, PhoneCall, ShieldCheck } from 'lucide-react';
+import { Search, ShoppingCart, User, LogOut, Package, Settings, ChevronDown, Menu, X, HelpCircle, PhoneCall, ShieldCheck, PackageSearch } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -133,6 +133,15 @@ export function Navbar() {
 
         {/* Right Nav Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* Desktop Track Order Link */}
+          <Link
+            href="/track-order"
+            className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-700 hover:text-primary transition-colors px-2.5 py-1.5 rounded-xl hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <PackageSearch className="h-4 w-4 text-primary" />
+            <span>Track Order</span>
+          </Link>
+
           {/* Mobile Search Toggle */}
           <button
             type="button"
@@ -178,6 +187,15 @@ export function Navbar() {
                     >
                       <Package className="h-4 w-4" />
                       My Orders
+                    </Link>
+
+                    <Link 
+                      href="/track-order" 
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <PackageSearch className="h-4 w-4" />
+                      Track Order
                     </Link>
                     
                     {role === 'admin' && (
@@ -330,6 +348,14 @@ export function Navbar() {
           {/* Quick Support Links */}
           <div className="space-y-1 text-sm text-gray-600">
             <p className="text-xs font-semibold uppercase text-gray-400 px-3 mb-2">Help & Support</p>
+            <Link
+              href="/track-order"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50 hover:text-primary transition-colors text-xs font-medium text-gray-700"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <PackageSearch className="w-4 h-4 text-primary" />
+              Track Order
+            </Link>
             <Link
               href="/contact"
               className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50 hover:text-primary transition-colors text-xs"

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { placeOrderAction } from "./actions";
 import { formatPrice } from "@/lib/utils";
+import { LogIn } from "lucide-react";
 
 const emptySubscribe = () => () => {};
 
@@ -18,7 +19,9 @@ export default function CheckoutPage() {
   const { items, getSubtotal, clearCart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [prefilledName, setPrefilledName] = useState("");
+  const [prefilledPhone, setPrefilledPhone] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -26,10 +29,17 @@ export default function CheckoutPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
-        if (data?.full_name) {
-          setPrefilledName(data.full_name);
-        }
+        setIsLoggedIn(true);
+        const { data } = await supabase
+          .from("profiles")
+          .select("full_name, phone")
+          .eq("id", user.id)
+          .single();
+
+        if (data?.full_name) setPrefilledName(data.full_name);
+        if (data?.phone) setPrefilledPhone(data.phone);
+      } else {
+        setIsLoggedIn(false);
       }
     };
     fetchProfile();
@@ -61,16 +71,24 @@ export default function CheckoutPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     const formData = new FormData(e.currentTarget);
     const result = await placeOrderAction(items, formData);
-    
+
     if (result.error) {
       setError(result.error);
       setLoading(false);
-    } else if (result.orderId) {
+    } else {
       clearCart();
-      router.push(`/orders/${result.orderId}?placed=1`);
+      if (result.honeypot || result.orderNumber === 0) {
+        router.push("/order-success?order=0");
+      } else if (result.isLoggedIn && result.orderId) {
+        router.push(`/orders/${result.orderId}?placed=1`);
+      } else if (result.orderNumber) {
+        router.push(`/order-success?order=${result.orderNumber}`);
+      } else {
+        router.push("/order-success");
+      }
     }
   };
 
@@ -79,35 +97,88 @@ export default function CheckoutPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
-      
+
       <div className="flex flex-col lg:flex-row gap-12">
         {/* Checkout Form */}
         <div className="flex-1">
           <form id="checkout-form" onSubmit={handleSubmit} className="space-y-8">
             {error && (
-              <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100">
+              <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 text-sm">
                 {error}
               </div>
             )}
-            
+
+            {/* Guest notice */}
+            {isLoggedIn === false && (
+              <div className="p-4 bg-blue-50/70 border border-blue-100 rounded-xl text-sm text-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <span>Checking out as guest. Already have an account?</span>
+                <Link
+                  href="/login"
+                  className="inline-flex items-center gap-1.5 text-primary font-semibold hover:underline shrink-0"
+                >
+                  <LogIn className="w-4 h-4" /> Login
+                </Link>
+              </div>
+            )}
+
+            {/* Hidden honeypot field for bot mitigation */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              className="sr-only absolute -z-10 opacity-0 pointer-events-none"
+              aria-hidden="true"
+            />
+
             <div className="space-y-4">
               <h2 className="text-xl font-bold">Shipping Details</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Full Name</label>
-                  <Input name="name" required defaultValue={prefilledName} placeholder="John Doe" />
+                  <label className="text-sm font-medium text-gray-700">Full Name *</label>
+                  <Input
+                    name="name"
+                    required
+                    defaultValue={prefilledName}
+                    key={`name-${prefilledName}`}
+                    placeholder="John Doe"
+                  />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Phone</label>
-                  <Input name="phone" required type="tel" minLength={10} placeholder="1234567890" />
+                  <label className="text-sm font-medium text-gray-700">Phone *</label>
+                  <Input
+                    name="phone"
+                    required
+                    type="tel"
+                    minLength={10}
+                    defaultValue={prefilledPhone}
+                    key={`phone-${prefilledPhone}`}
+                    placeholder="03001234567"
+                  />
                 </div>
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-sm font-medium text-gray-700">Address</label>
-                  <Input name="address" required placeholder="123 Main St, Apt 4B" />
+                  <label className="text-sm font-medium text-gray-700">Email (optional)</label>
+                  <Input
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                  />
                 </div>
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-sm font-medium text-gray-700">City</label>
-                  <Input name="city" required placeholder="New York" />
+                  <label className="text-sm font-medium text-gray-700">Address *</label>
+                  <Input
+                    name="address"
+                    required
+                    placeholder="Street address, building, apartment or house #"
+                  />
+                </div>
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="text-sm font-medium text-gray-700">City *</label>
+                  <Input
+                    name="city"
+                    required
+                    placeholder="e.g. Lahore, Karachi, Islamabad"
+                  />
                 </div>
               </div>
             </div>
@@ -120,7 +191,7 @@ export default function CheckoutPage() {
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
               </div>
-              <p className="text-sm text-gray-500">Pay when your order arrives at your door.</p>
+              <p className="text-sm text-gray-500">Pay cash when your order arrives at your doorstep.</p>
             </div>
           </form>
         </div>
@@ -129,7 +200,7 @@ export default function CheckoutPage() {
         <div className="w-full lg:w-96 shrink-0">
           <Card className="p-6 sticky top-24">
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
-            
+
             <div className="space-y-4 mb-6">
               {items.map((item) => (
                 <div key={item.productId} className="flex gap-4">
@@ -160,18 +231,18 @@ export default function CheckoutPage() {
                 <span className="text-green-600 font-medium">Free</span>
               </div>
             </div>
-            
+
             <div className="h-px bg-gray-100 mb-6" />
-            
+
             <div className="flex justify-between items-end mb-8">
               <span className="font-bold text-lg">Total</span>
               <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
             </div>
-            
-            <Button 
-              type="submit" 
-              form="checkout-form" 
-              size="lg" 
+
+            <Button
+              type="submit"
+              form="checkout-form"
+              size="lg"
               className="w-full"
               disabled={loading}
             >

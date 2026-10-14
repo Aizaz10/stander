@@ -21,12 +21,23 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  await connection();
   const { id } = await params;
-  const shortId = id.split("-")[0].toUpperCase();
-  return {
-    title: `Order #${shortId}`,
-    description: `Details and tracking for order #${shortId}.`,
-  };
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from("orders").select("order_number").eq("id", id).single();
+    const displayId = data?.order_number || id.split("-")[0].toUpperCase();
+    return {
+      title: `Order #${displayId}`,
+      description: `Details and tracking for order #${displayId}.`,
+    };
+  } catch {
+    const shortId = id.split("-")[0].toUpperCase();
+    return {
+      title: `Order #${shortId}`,
+      description: `Details and tracking for order #${shortId}.`,
+    };
+  }
 }
 
 async function OrderDetails({ 
@@ -67,6 +78,7 @@ async function OrderDetails({
   };
 
   const shortId = order.id.split('-')[0].toUpperCase();
+  const displayId = order.order_number || shortId;
 
   return (
     <div className="space-y-8">
@@ -78,7 +90,7 @@ async function OrderDetails({
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Order #{shortId}</h2>
+          <h2 className="text-2xl font-bold mb-2">Order #{displayId}</h2>
           <p className="text-gray-500">Placed on {new Date(order.created_at).toLocaleString()}</p>
         </div>
         <Badge className={getStatusColor(order.status) + " text-base px-4 py-1"}>

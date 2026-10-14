@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/store/cartStore";
+import { Minus, Plus } from "lucide-react";
 
 interface AddToCartButtonProps {
   product: {
@@ -39,28 +40,42 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
     );
 
     setAdded(true);
+    setQuantity(1);
     setTimeout(() => {
       setAdded(false);
     }, 2000);
   };
 
   return (
-    <div className="flex gap-4">
-      <div className="w-24 shrink-0">
-        <select 
-          className="w-full h-12 px-3 border border-gray-200 rounded-xl bg-gray-50 outline-none" 
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          disabled={isOutOfStock}
+    <div className="flex items-center gap-4">
+      {/* Quantity Stepper */}
+      <div className="w-32 shrink-0 h-12 px-2 flex items-center justify-between border border-gray-200 rounded-xl bg-gray-50">
+        <button
+          type="button"
+          onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+          disabled={isOutOfStock || quantity <= 1}
+          aria-label="Decrease quantity"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-primary-light hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400"
         >
-          {Array.from({ length: Math.min(10, Math.max(1, stock)) }).map((_, i) => (
-            <option key={i + 1} value={i + 1}>{i + 1}</option>
-          ))}
-        </select>
+          <Minus className="w-4 h-4" />
+        </button>
+        <span className="w-10 text-center font-semibold text-gray-900 tabular-nums select-none">
+          {quantity}
+        </span>
+        <button
+          type="button"
+          onClick={() => setQuantity((prev) => Math.min(stock, prev + 1))}
+          disabled={isOutOfStock || quantity >= stock}
+          aria-label="Increase quantity"
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-primary-light hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
       </div>
+
       <Button 
         size="lg" 
-        className="flex-1" 
+        className="flex-1 h-12" 
         onClick={handleAdd}
         disabled={isOutOfStock || added}
         variant={added ? "secondary" : "primary"}
@@ -70,3 +85,4 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
     </div>
   );
 }
+

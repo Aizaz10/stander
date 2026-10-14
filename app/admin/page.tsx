@@ -137,17 +137,25 @@ async function DashboardContent() {
                 {recentOrders && recentOrders.length > 0 ? (
                   recentOrders.map((order) => {
                     const shortId = order.id.split('-')[0].toUpperCase();
+                    const displayId = order.order_number || shortId;
                     return (
                       <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4 font-mono font-medium text-gray-900">
                           <Link href={`/admin/orders/${order.id}`} className="hover:text-primary transition-colors">
-                            #{shortId}
+                            #{displayId}
                           </Link>
                         </td>
                         <td className="px-6 py-4 font-medium text-gray-900">
-                          <Link href={`/admin/orders/${order.id}`} className="hover:text-primary transition-colors">
-                            {order.shipping_name}
-                          </Link>
+                          <div className="flex items-center gap-2">
+                            <Link href={`/admin/orders/${order.id}`} className="hover:text-primary transition-colors">
+                              {order.shipping_name}
+                            </Link>
+                            {!order.user_id && (
+                              <Badge className="bg-gray-100 text-gray-700 text-[10px] px-1.5 py-0.5 border-none">
+                                Guest
+                              </Badge>
+                            )}
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-gray-500">{new Date(order.created_at).toLocaleDateString()}</td>
                         <td className="px-6 py-4">

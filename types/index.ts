@@ -32,7 +32,9 @@ export interface Product {
 
 export interface Order {
   id: string;
+  order_number: number;
   user_id: string | null;
+  guest_email: string | null;
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   total: number | null;
   shipping_name: string | null;
