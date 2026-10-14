@@ -114,8 +114,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg">
-          <span className="text-2xl font-bold text-primary tracking-tight">Stander</span>
+        <Link href="/" className="whitespace-nowrap text-xl font-bold text-primary sm:text-2xl">
+          Stander Trader
         </Link>
         
         {/* Desktop Search Bar */}
