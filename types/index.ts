@@ -37,6 +37,7 @@ export interface Order {
   guest_email: string | null;
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   total: number | null;
+  shipping_fee: number;
   shipping_name: string | null;
   shipping_phone: string | null;
   shipping_address: string | null;

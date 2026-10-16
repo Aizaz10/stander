@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { placeOrderAction } from "./actions";
 import { formatPrice } from "@/lib/utils";
+import { PAKISTAN_CITIES, getShippingFee } from "@/lib/constants";
 import { LogIn } from "lucide-react";
 
 const emptySubscribe = () => () => {};
@@ -22,6 +23,9 @@ export default function CheckoutPage() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [prefilledName, setPrefilledName] = useState("");
   const [prefilledPhone, setPrefilledPhone] = useState("");
+  const [prefilledAddress, setPrefilledAddress] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [customCity, setCustomCity] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -30,20 +34,59 @@ export default function CheckoutPage() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setIsLoggedIn(true);
-        const { data } = await supabase
+        const { data: profile } = await supabase
           .from("profiles")
           .select("full_name, phone")
           .eq("id", user.id)
           .single();
 
-        if (data?.full_name) setPrefilledName(data.full_name);
-        if (data?.phone) setPrefilledPhone(data.phone);
+        if (profile?.full_name) setPrefilledName(profile.full_name);
+        if (profile?.phone) setPrefilledPhone(profile.phone);
+
+        // Fetch their most recent order to prefill address & city if available
+        const { data: recentOrder } = await supabase
+          .from("orders")
+          .select("shipping_name, shipping_phone, shipping_address, shipping_city")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (recentOrder) {
+          if (!profile?.full_name && recentOrder.shipping_name) {
+            setPrefilledName(recentOrder.shipping_name);
+          }
+          if (!profile?.phone && recentOrder.shipping_phone) {
+            setPrefilledPhone(recentOrder.shipping_phone);
+          }
+          if (recentOrder.shipping_address) {
+            setPrefilledAddress(recentOrder.shipping_address);
+          }
+          if (recentOrder.shipping_city) {
+            const rawCity = recentOrder.shipping_city.trim();
+            const matchedCity = PAKISTAN_CITIES.find(
+              (c) => c.toLowerCase() === rawCity.toLowerCase()
+            );
+            if (matchedCity) {
+              setSelectedCity(matchedCity);
+            } else {
+              setSelectedCity("other");
+              setCustomCity(rawCity);
+            }
+          }
+        }
       } else {
         setIsLoggedIn(false);
       }
     };
     fetchProfile();
   }, []);
+
+  const effectiveCity =
+    selectedCity === "other" ? customCity.trim() : selectedCity.trim();
+  const shippingFee = getShippingFee(effectiveCity);
+  const subtotal = getSubtotal();
+  const total = effectiveCity ? subtotal + shippingFee : subtotal;
 
   if (!mounted) {
     return (
@@ -69,10 +112,18 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
+    if (!effectiveCity) {
+      setError("Please select or enter your city");
+      return;
+    }
+
+    setLoading(true);
+
     const formData = new FormData(e.currentTarget);
+    formData.set("city", effectiveCity);
+
     const result = await placeOrderAction(items, formData);
 
     if (result.error) {
@@ -91,8 +142,6 @@ export default function CheckoutPage() {
       }
     }
   };
-
-  const subtotal = getSubtotal();
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -130,6 +179,9 @@ export default function CheckoutPage() {
               className="sr-only absolute -z-10 opacity-0 pointer-events-none"
               aria-hidden="true"
             />
+
+            {/* Hidden input to ensure city is submitted reliably */}
+            <input type="hidden" name="city" value={effectiveCity} />
 
             <div className="space-y-4">
               <h2 className="text-xl font-bold">Shipping Details</h2>
@@ -169,17 +221,50 @@ export default function CheckoutPage() {
                   <Input
                     name="address"
                     required
+                    defaultValue={prefilledAddress}
+                    key={`address-${prefilledAddress}`}
                     placeholder="Street address, building, apartment or house #"
                   />
                 </div>
                 <div className="space-y-1 sm:col-span-2">
-                  <label className="text-sm font-medium text-gray-700">City *</label>
-                  <Input
-                    name="city"
+                  <label htmlFor="city-select" className="text-sm font-medium text-gray-700">
+                    City *
+                  </label>
+                  <select
+                    id="city-select"
                     required
-                    placeholder="e.g. Lahore, Karachi, Islamabad"
-                  />
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary-light focus-visible:outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 cursor-pointer"
+                  >
+                    <option value="">Select your city *</option>
+                    {PAKISTAN_CITIES.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                    <option value="other">Other (type your city)</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Delivery: Karachi Rs. 250, other cities Rs. 350
+                  </p>
                 </div>
+
+                {selectedCity === "other" && (
+                  <div className="space-y-1 sm:col-span-2">
+                    <label htmlFor="custom-city" className="text-sm font-medium text-gray-700">
+                      City Name *
+                    </label>
+                    <Input
+                      id="custom-city"
+                      required
+                      value={customCity}
+                      onChange={(e) => setCustomCity(e.target.value)}
+                      placeholder="e.g. Sukkur, Abbottabad, Mardan"
+                      autoFocus
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -227,8 +312,16 @@ export default function CheckoutPage() {
                 <span className="font-medium text-gray-900">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span className="text-green-600 font-medium">Free</span>
+                <span>
+                  {effectiveCity && effectiveCity.toLowerCase() === "karachi"
+                    ? "Delivery (Karachi)"
+                    : "Delivery"}
+                </span>
+                {effectiveCity ? (
+                  <span className="font-medium text-gray-900">{formatPrice(shippingFee)}</span>
+                ) : (
+                  <span className="text-gray-500 font-medium">Select city</span>
+                )}
               </div>
             </div>
 
@@ -236,7 +329,7 @@ export default function CheckoutPage() {
 
             <div className="flex justify-between items-end mb-8">
               <span className="font-bold text-lg">Total</span>
-              <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
+              <span className="font-bold text-3xl text-gray-900">{formatPrice(total)}</span>
             </div>
 
             <Button

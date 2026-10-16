@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Shipping & Returns",
-  description: "Learn about Stander delivery options, free shipping policy, and 30-day returns guarantee.",
+  description: "Learn about Stander delivery options, city-based shipping rates, and 30-day returns guarantee.",
 };
 
 export default function ShippingReturnsPage() {
@@ -16,7 +16,7 @@ export default function ShippingReturnsPage() {
           Shipping & Returns
         </h1>
         <p className="text-gray-500 text-base">
-          Transparent shipping timelines, free delivery on orders above Rs. 5,000, and a hassle-free 30-day return guarantee.
+          Transparent shipping timelines, flat city delivery charges (Karachi Rs. 250, other cities Rs. 350), and a hassle-free 30-day return guarantee.
         </p>
       </div>
 
@@ -35,29 +35,29 @@ export default function ShippingReturnsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
-              <span className="text-xs font-semibold text-primary uppercase tracking-wider">Most Popular</span>
-              <h3 className="font-bold text-gray-900 mt-1">Standard Delivery</h3>
-              <p className="text-2xl font-extrabold text-green-600 my-2">Free*</p>
-              <p className="text-xs text-gray-500">Free above Rs. 5,000, otherwise Rs. 250. Delivered within 3–5 business days</p>
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">Karachi</span>
+              <h3 className="font-bold text-gray-900 mt-1">Karachi Delivery</h3>
+              <p className="text-2xl font-extrabold text-primary my-2">Rs. 250</p>
+              <p className="text-xs text-gray-500">Delivered within 2–3 business days. Cash on Delivery available.</p>
             </div>
 
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Fast</span>
-              <h3 className="font-bold text-gray-900 mt-1">Express Delivery</h3>
-              <p className="text-2xl font-extrabold text-gray-900 my-2">Rs. 500</p>
-              <p className="text-xs text-gray-500">Delivered within 1–2 business days</p>
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Nationwide</span>
+              <h3 className="font-bold text-gray-900 mt-1">Other Cities</h3>
+              <p className="text-2xl font-extrabold text-primary my-2">Rs. 350</p>
+              <p className="text-xs text-gray-500">Delivered within 3–5 business days to Lahore, Islamabad, and nationwide.</p>
             </div>
 
             <div className="p-4 rounded-xl bg-gray-50 border border-gray-100">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Urgent</span>
-              <h3 className="font-bold text-gray-900 mt-1">Priority Overnight</h3>
-              <p className="text-2xl font-extrabold text-gray-900 my-2">Rs. 1,000</p>
-              <p className="text-xs text-gray-500">Next business day guaranteed</p>
+              <span className="text-xs font-semibold text-green-600 uppercase tracking-wider">Payment</span>
+              <h3 className="font-bold text-gray-900 mt-1">Cash on Delivery</h3>
+              <p className="text-2xl font-extrabold text-green-700 my-2">COD</p>
+              <p className="text-xs text-gray-500">Pay cash upon arrival at your doorstep on all orders across Pakistan.</p>
             </div>
           </div>
 
           <p className="text-sm text-gray-600 leading-relaxed">
-            All shipments include tracking numbers sent to your email upon fulfillment. Fragile and high-value electronics are packed in protective shock-absorbent packaging.
+            All shipments include tracking numbers you can track using your order number and phone number. Fragile and high-value electronics are packed in protective shock-absorbent packaging.
           </p>
         </div>
 

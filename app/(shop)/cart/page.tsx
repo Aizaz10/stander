@@ -117,17 +117,27 @@ export default function CartPage() {
                 <span>Subtotal</span>
                 <span className="font-medium text-gray-900">{formatPrice(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span className="text-green-600 font-medium">Free</span>
+              <div className="flex flex-col gap-1 text-gray-600">
+                <div className="flex justify-between">
+                  <span>Delivery</span>
+                  <span className="text-gray-500 text-xs">Calculated at checkout</span>
+                </div>
+                <span className="text-xs text-gray-400">
+                  (Karachi Rs. 250, other cities Rs. 350)
+                </span>
               </div>
             </div>
             
             <div className="h-px bg-gray-100 mb-6" />
             
-            <div className="flex justify-between items-end mb-8">
-              <span className="font-bold text-lg">Total</span>
-              <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
+            <div className="mb-8">
+              <div className="flex justify-between items-end">
+                <span className="font-bold text-lg">Total</span>
+                <span className="font-bold text-3xl text-gray-900">{formatPrice(subtotal)}</span>
+              </div>
+              <p className="text-xs text-gray-500 mt-1.5 text-right">
+                Delivery charges added at checkout
+              </p>
             </div>
             
             <Link href="/checkout" className="block">

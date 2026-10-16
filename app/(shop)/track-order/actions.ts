@@ -14,6 +14,7 @@ export interface TrackedOrder {
   status: "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
   created_at: string;
   total: number;
+  shipping_fee?: number;
   shipping_name: string;
   shipping_address: string;
   shipping_city: string;

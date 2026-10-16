@@ -13,16 +13,16 @@ const FAQ_CATEGORIES = [
     title: "Orders & Shipping",
     faqs: [
       {
-        q: "How long does standard delivery take?",
-        a: "Standard shipping typically delivers within 3 to 5 business days nationwide. Express orders are delivered within 1 to 2 business days.",
+        q: "How long does delivery take?",
+        a: "Delivery typically takes 2 to 3 business days for Karachi and 3 to 5 business days for other cities across Pakistan.",
       },
       {
         q: "How can I track my order?",
-        a: "Once your order is placed, you can track its real-time status in the 'My Orders' section of your account or via the order confirmation link.",
+        a: "Once your order is placed, you can track its real-time status in the 'Track Order' section using your order number and phone number.",
       },
       {
-        q: "Is shipping free?",
-        a: "Yes! We offer free standard delivery on all orders above Rs. 5,000. For orders below Rs. 5,000, standard shipping is Rs. 250.",
+        q: "What are the delivery charges?",
+        a: "Delivery is Rs. 250 for Karachi and Rs. 350 for all other cities across Pakistan. Cash on Delivery is available on all orders.",
       },
     ],
   },
@@ -31,7 +31,7 @@ const FAQ_CATEGORIES = [
     faqs: [
       {
         q: "Which payment methods are accepted?",
-        a: "We currently support Cash on Delivery (COD) as well as major credit/debit cards and secure digital payments.",
+        a: "We currently support Cash on Delivery (COD) on all orders across Pakistan. Pay cash when your order arrives at your doorstep.",
       },
       {
         q: "Can I cancel or modify an order after placing it?",

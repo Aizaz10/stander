@@ -128,9 +128,29 @@ async function OrderDetails({
             </div>
           ))}
         </div>
-        <div className="p-6 bg-gray-50 flex justify-between items-center border-t border-gray-100">
-          <span className="font-bold text-lg">Total</span>
-          <span className="font-bold text-2xl">{formatPrice(order.total)}</span>
+        <div className="p-6 bg-gray-50 border-t border-gray-100 space-y-3">
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>Subtotal</span>
+            <span className="font-medium text-gray-900">
+              {formatPrice(
+                order.order_items?.reduce(
+                  (acc: number, item: OrderItem) => acc + (Number(item.price) || 0) * (item.quantity || 1),
+                  0
+                ) || 0
+              )}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>Delivery</span>
+            <span className="font-medium text-gray-900">
+              {Number(order.shipping_fee ?? 0) === 0 ? "Free" : formatPrice(order.shipping_fee)}
+            </span>
+          </div>
+          <div className="h-px bg-gray-200/80 my-1" />
+          <div className="flex justify-between items-center">
+            <span className="font-bold text-lg text-gray-900">Total</span>
+            <span className="font-bold text-2xl text-primary">{formatPrice(order.total)}</span>
+          </div>
         </div>
       </Card>
     </div>

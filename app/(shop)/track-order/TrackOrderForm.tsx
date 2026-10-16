@@ -270,11 +270,33 @@ export function TrackOrderForm() {
                 </tbody>
               </table>
             </div>
-            <div className="p-6 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-              <span className="text-base font-bold text-gray-700">Total</span>
-              <span className="text-2xl font-bold text-primary">
-                {formatPrice(state.data.total)}
-              </span>
+            <div className="p-6 bg-gray-50 border-t border-gray-100 space-y-3">
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Subtotal</span>
+                <span className="font-medium text-gray-900">
+                  {formatPrice(
+                    state.data.items?.reduce(
+                      (acc, item) => acc + (Number(item.price) || 0) * (item.quantity || 1),
+                      0
+                    ) || 0
+                  )}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Delivery</span>
+                <span className="font-medium text-gray-900">
+                  {Number(state.data.shipping_fee ?? 0) === 0
+                    ? "Free"
+                    : formatPrice(state.data.shipping_fee)}
+                </span>
+              </div>
+              <div className="h-px bg-gray-200/80 my-1" />
+              <div className="flex justify-between items-center">
+                <span className="text-base font-bold text-gray-900">Total</span>
+                <span className="text-2xl font-bold text-primary">
+                  {formatPrice(state.data.total)}
+                </span>
+              </div>
             </div>
           </Card>
         </div>
