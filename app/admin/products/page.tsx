@@ -13,7 +13,7 @@ import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Products Management",
-  description: "Manage inventory, products, and categories for Stander store.",
+  description: "Manage inventory, products, and categories for Stander Trader store.",
 };
 
 async function ProductsList({ searchParamsPromise }: { searchParamsPromise: Promise<{ q?: string }> }) {

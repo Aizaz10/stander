@@ -10,7 +10,11 @@ import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "My Orders",
-  description: "Track and review your past orders with Stander.",
+  description: "Track and review your past orders with Stander Trader.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 async function OrdersList() {

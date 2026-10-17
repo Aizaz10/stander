@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
-  description: "Find answers to common questions about orders, payments, shipping, and warranty at Stander.",
+  description: "Find answers to common questions about orders, payments, shipping, and warranty at Stander Trader.",
 };
 
 const FAQ_CATEGORIES = [

@@ -5,7 +5,11 @@ import { PackageSearch } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Track Order",
-  description: "Track the real-time fulfillment status of your Stander order with your order number and phone number.",
+  description: "Track the real-time fulfillment status of your Stander Trader order with your order number and phone number.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 function TrackOrderSkeleton() {

@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Overview of sales, revenue, and order metrics for Stander store.",
+  description: "Overview of sales, revenue, and order metrics for Stander Trader store.",
 };
 
 async function DashboardContent() {

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
 import { formatPrice } from "@/lib/utils";
+import { SITE_URL } from "@/lib/site";
 
 export default async function ProductDetails({ paramsPromise }: { paramsPromise: Promise<{ slug: string }> }) {
   await connection();
@@ -37,8 +38,39 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
     ? Math.round(((product.compare_at_price - product.price) / product.compare_at_price) * 100) 
     : 0;
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || `Buy ${product.name} at Stander Trader.`,
+    image: Array.isArray(product.images) && product.images.length > 0 ? product.images : [],
+    brand: {
+      "@type": "Brand",
+      name: product.brand || "Stander Trader",
+    },
+    sku: product.id,
+    ...(product.categories?.name ? { category: product.categories.name } : {}),
+    offers: {
+      "@type": "Offer",
+      price: Number(product.price),
+      priceCurrency: "PKR",
+      availability:
+        (product.stock ?? 0) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      url: `${SITE_URL}/product/${product.slug}`,
+      itemCondition: "https://schema.org/NewCondition",
+    },
+  };
+
+  const jsonLdString = JSON.stringify(productJsonLd).replace(/</g, "\\u003c");
+
   return (
     <div className="container mx-auto px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString }}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 items-start">
         {/* Images */}
         <div className="space-y-4">

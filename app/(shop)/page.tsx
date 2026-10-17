@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -5,6 +6,17 @@ import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, Zap, Shield, Truck } from "lucide-react";
 import TrendingProducts from "@/components/shop/TrendingProducts";
 import TrendingProductsSkeleton from "@/components/shop/TrendingProductsSkeleton";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Stander Trader - Electronics & Gadgets",
+  },
+  description:
+    "Discover the most innovative electronics, gadgets, and tech accessories at Stander Trader. Enjoy reliable warranties and fast delivery across Pakistan.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (

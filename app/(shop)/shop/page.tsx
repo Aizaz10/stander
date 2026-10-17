@@ -6,7 +6,11 @@ import TrendingProductsSkeleton from "@/components/shop/TrendingProductsSkeleton
 
 export const metadata: Metadata = {
   title: "Shop All Products",
-  description: "Discover our collection of premium electronics, gadgets, and tech accessories.",
+  description:
+    "Discover our collection of premium electronics, gadgets, and tech accessories at Stander Trader. Best prices and fast delivery across Pakistan.",
+  alternates: {
+    canonical: "/shop",
+  },
 };
 
 function ShopFiltersSkeleton() {

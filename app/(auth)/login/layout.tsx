@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Sign in to your Stander account to manage orders and track shipments.",
+  description: "Sign in to your Stander Trader account to manage orders and track shipments.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function LoginLayout({ children }: { children: React.ReactNode }) {

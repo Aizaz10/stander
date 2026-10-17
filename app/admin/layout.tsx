@@ -6,10 +6,14 @@ import AdminSidebar from "./AdminSidebar";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Stander Admin",
-    default: "Admin Dashboard | Stander Admin",
+    template: "%s | Stander Trader Admin",
+    default: "Admin Dashboard | Stander Trader Admin",
   },
-  description: "Stander e-commerce administration and management.",
+  description: "Stander Trader e-commerce administration and management.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 function AdminSidebarSkeleton() {

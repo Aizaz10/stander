@@ -16,7 +16,7 @@ export async function generateMetadata({
     const supabase = await createClient();
     const { data: product } = await supabase
       .from("products")
-      .select("name, description, images")
+      .select("name, description, images, brand, categories(name)")
       .eq("slug", slug)
       .eq("is_active", true)
       .single();
@@ -24,23 +24,48 @@ export async function generateMetadata({
     if (!product) {
       return {
         title: "Product Not Found",
-        description: "The requested product could not be found.",
       };
     }
 
+    const categoryName = (product.categories as { name?: string } | null)?.name;
+    const fallbackDesc = product.brand && categoryName
+      ? `Buy ${product.name} by ${product.brand} in ${categoryName} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`
+      : product.brand
+      ? `Buy ${product.name} by ${product.brand} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`
+      : categoryName
+      ? `Buy ${product.name} in ${categoryName} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`
+      : `Buy ${product.name} at Stander Trader with warranty and fast delivery across Pakistan.`;
+
+    const description = product.description && product.description.trim()
+      ? product.description.trim().slice(0, 155)
+      : fallbackDesc;
+
+    const canonicalUrl = `/product/${slug}`;
+    const hasImages = Array.isArray(product.images) && product.images.length > 0;
+    const ogImages = hasImages ? [product.images[0]] : undefined;
+
     return {
       title: product.name,
-      description: product.description || `Buy ${product.name} at Stander with fast shipping and warranty.`,
+      description,
+      alternates: {
+        canonical: canonicalUrl,
+      },
       openGraph: {
-        title: `${product.name} | Stander`,
-        description: product.description || `Buy ${product.name} at Stander.`,
-        images: product.images && product.images.length > 0 ? [product.images[0]] : [],
+        title: product.name,
+        description,
+        url: canonicalUrl,
+        ...(ogImages ? { images: ogImages } : {}),
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: product.name,
+        description,
+        ...(ogImages ? { images: ogImages } : {}),
       },
     };
   } catch {
     return {
       title: "Product Details",
-      description: "Product details and pricing on Stander.",
     };
   }
 }

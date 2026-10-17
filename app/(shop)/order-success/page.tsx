@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Order Placed",
-  description: "Your order has been placed successfully.",
+  description: "Your order has been placed successfully on Stander Trader.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 async function OrderSuccessContent({

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Shipping & Returns",
-  description: "Learn about Stander delivery options, city-based shipping rates, and 30-day returns guarantee.",
+  description: "Learn about Stander Trader delivery options, city-based shipping rates, and 30-day returns guarantee.",
 };
 
 export default function ShippingReturnsPage() {

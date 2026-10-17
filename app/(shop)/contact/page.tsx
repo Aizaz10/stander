@@ -4,7 +4,7 @@ import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with Stander customer support for inquiries, order help, and feedback.",
+  description: "Get in touch with Stander Trader customer support for inquiries, order help, and feedback.",
 };
 
 export default function ContactPage() {

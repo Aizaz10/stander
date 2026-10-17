@@ -29,13 +29,21 @@ export async function generateMetadata({
     const displayId = data?.order_number || id.split("-")[0].toUpperCase();
     return {
       title: `Order #${displayId}`,
-      description: `Details and tracking for order #${displayId}.`,
+      description: `Details and tracking for order #${displayId} on Stander Trader.`,
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   } catch {
     const shortId = id.split("-")[0].toUpperCase();
     return {
       title: `Order #${shortId}`,
-      description: `Details and tracking for order #${shortId}.`,
+      description: `Details and tracking for order #${shortId} on Stander Trader.`,
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }

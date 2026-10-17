@@ -2,29 +2,31 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import { SITE_URL } from "@/lib/site";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Stander - Electronics & Gadgets",
-    template: "%s | Stander",
+    default: "Stander Trader - Electronics & Gadgets",
+    template: "%s | Stander Trader",
   },
-  description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander.",
+  description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander Trader.",
   openGraph: {
-    title: "Stander - Electronics & Gadgets",
-    description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander.",
-    siteName: "Stander",
-    locale: "en_US",
     type: "website",
+    siteName: "Stander Trader",
+    locale: "en_PK",
+    title: "Stander Trader - Electronics & Gadgets",
+    description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander Trader.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Stander - Electronics & Gadgets",
-    description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander.",
+    title: "Stander Trader - Electronics & Gadgets",
+    description: "Explore premium electronics, gadgets, laptops, smartphones, and tech accessories at Stander Trader.",
   },
 };
 
