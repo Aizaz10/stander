@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, ShoppingBag, Users, Menu, Store, X } from "lucide-react";
+import { LayoutDashboard, Package, Tags, ShoppingBag, Users, Menu, Store, X } from "lucide-react";
 import { useState } from "react";
 
 const NAV_ITEMS = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Products", href: "/admin/products", icon: Package },
+  { name: "Categories", href: "/admin/categories", icon: Tags },
   { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
   { name: "Users", href: "/admin/users", icon: Users },
 ];

@@ -6,7 +6,11 @@ import { Input } from "@/components/ui/Input";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-export function ShopFilters() {
+interface ShopFiltersProps {
+  categories?: { name: string; slug: string }[];
+}
+
+export function ShopFilters({ categories = [] }: ShopFiltersProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -41,12 +45,9 @@ export function ShopFilters() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const categories = [
+  const allCategories = [
     { name: "All Categories", slug: "" },
-    { name: "Laptops", slug: "laptops" },
-    { name: "Smartphones", slug: "smartphones" },
-    { name: "Audio", slug: "audio" },
-    { name: "Accessories", slug: "accessories" },
+    ...categories,
   ];
 
   const FilterContent = (
@@ -54,7 +55,7 @@ export function ShopFilters() {
       <div>
         <h3 className="font-semibold mb-4 text-gray-900">Categories</h3>
         <ul className="space-y-2">
-          {categories.map((cat) => (
+          {allCategories.map((cat) => (
             <li key={cat.slug}>
               <button
                 onClick={() => {

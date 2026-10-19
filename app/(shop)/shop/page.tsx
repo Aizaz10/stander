@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { connection } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 import ProductGrid from "@/components/shop/ProductGrid";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import TrendingProductsSkeleton from "@/components/shop/TrendingProductsSkeleton";
@@ -40,6 +42,17 @@ function ShopFiltersSkeleton() {
   );
 }
 
+async function ShopFiltersServer() {
+  await connection();
+  const supabase = await createClient();
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("name, slug")
+    .order("name", { ascending: true });
+
+  return <ShopFilters categories={categories || []} />;
+}
+
 export default function ShopPage({
   searchParams,
 }: {
@@ -54,9 +67,9 @@ export default function ShopPage({
 
       <div className="flex flex-col md:flex-row gap-8">
         <Suspense fallback={<ShopFiltersSkeleton />}>
-          <ShopFilters />
+          <ShopFiltersServer />
         </Suspense>
-        
+
         <div className="flex-1">
           <Suspense fallback={<TrendingProductsSkeleton />}>
             <ProductGrid searchParamsPromise={searchParams} />

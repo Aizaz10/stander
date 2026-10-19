@@ -23,6 +23,7 @@ function AdminSidebarSkeleton() {
       <div className="h-10 bg-gray-100 rounded-xl" />
       <div className="h-10 bg-gray-100 rounded-xl" />
       <div className="h-10 bg-gray-100 rounded-xl" />
+      <div className="h-10 bg-gray-100 rounded-xl" />
     </div>
   );
 }

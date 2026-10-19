@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { createProductAction, updateProductAction, type ProductActionData } from "@/app/admin/products/actions";
 import { X, Upload, Loader2 } from "lucide-react";
+import Link from "next/link";
 
 interface Category {
   id: string;
@@ -243,17 +244,29 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
             
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">Category *</label>
-              <select 
-                name="category_id" 
-                required
-                defaultValue={initialData?.category_id || ""}
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-primary"
-              >
-                <option value="">Select a category</option>
-                {categories.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
+              {categories.length === 0 ? (
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <span>No categories available yet.</span>
+                  <Link
+                    href="/admin/categories/new"
+                    className="font-semibold text-primary underline hover:text-primary-dark"
+                  >
+                    Create a category first
+                  </Link>
+                </div>
+              ) : (
+                <select 
+                  name="category_id" 
+                  required
+                  defaultValue={initialData?.category_id || ""}
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-primary"
+                >
+                  <option value="">Select a category</option>
+                  {categories.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              )}
             </div>
 
             <div className="space-y-1">

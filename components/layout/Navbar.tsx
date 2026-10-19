@@ -31,7 +31,7 @@ function CartIcon() {
   );
 }
 
-export function Navbar() {
+export function Navbar({ categoryLinks }: { categoryLinks?: React.ReactNode } = {}) {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -313,37 +313,18 @@ export function Navbar() {
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1 mb-6 pb-6 border-b border-gray-100 text-sm font-medium">
-            <p className="text-xs font-semibold uppercase text-gray-400 px-3 mb-2">Shop Categories</p>
-            <Link
-              href="/shop"
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-            >
-              <span>All Products</span>
-              <span className="text-xs text-gray-400">→</span>
-            </Link>
-            <Link
-              href="/shop?category=laptops"
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-            >
-              <span>Laptops</span>
-              <span className="text-xs text-gray-400">→</span>
-            </Link>
-            <Link
-              href="/shop?category=smartphones"
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-            >
-              <span>Smartphones</span>
-              <span className="text-xs text-gray-400">→</span>
-            </Link>
-            <Link
-              href="/shop?category=audio"
-              className="flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
-            >
-              <span>Audio & Headphones</span>
-              <span className="text-xs text-gray-400">→</span>
-            </Link>
-          </nav>
+          {categoryLinks || (
+            <nav className="space-y-1 mb-6 pb-6 border-b border-gray-100 text-sm font-medium">
+              <p className="text-xs font-semibold uppercase text-gray-400 px-3 mb-2">Shop Categories</p>
+              <Link
+                href="/shop"
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+              >
+                <span>All Products</span>
+                <span className="text-xs text-gray-400">→</span>
+              </Link>
+            </nav>
+          )}
 
           {/* Quick Support Links */}
           <div className="space-y-1 text-sm text-gray-600">
