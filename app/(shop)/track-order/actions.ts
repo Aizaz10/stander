@@ -24,6 +24,10 @@ export interface TrackedOrder {
 export interface TrackOrderState {
   data: TrackedOrder | null;
   error: string | null;
+  fieldErrors?: {
+    orderNumber?: string;
+    phone?: string;
+  };
 }
 
 export async function trackOrderAction(
@@ -38,17 +42,24 @@ export async function trackOrderAction(
   const orderNumber = parseInt(orderNumberRaw?.trim() || "", 10);
   const phone = phoneRaw?.trim() || "";
 
-  if (!orderNumber || isNaN(orderNumber) || orderNumber <= 0) {
-    return {
-      error: "Please enter a valid order number.",
-      data: null,
-    };
+  const fieldErrors: {
+    orderNumber?: string;
+    phone?: string;
+  } = {};
+
+  if (!orderNumberRaw || isNaN(orderNumber) || orderNumber <= 0) {
+    fieldErrors.orderNumber = "Please enter a valid positive order number.";
   }
 
   const cleanPhone = phone.replace(/\D/g, "");
   if (cleanPhone.length < 10) {
+    fieldErrors.phone = "Please enter a valid phone number with at least 10 digits.";
+  }
+
+  if (Object.keys(fieldErrors).length > 0) {
     return {
-      error: "Please enter a valid phone number with at least 10 digits.",
+      error: Object.values(fieldErrors)[0],
+      fieldErrors,
       data: null,
     };
   }

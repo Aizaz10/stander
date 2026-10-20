@@ -2,11 +2,34 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
+import {
+  normalizePkPhone,
+  isValidEmail,
+  trimAndCollapse,
+  NAME_MAX,
+  ADDRESS_MAX,
+  CITY_MAX,
+} from "@/lib/validation";
+
+export interface PlaceOrderResult {
+  orderId?: string;
+  orderNumber?: number | null;
+  isLoggedIn?: boolean;
+  honeypot?: boolean;
+  error?: string;
+  fieldErrors?: {
+    name?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    email?: string;
+  };
+}
 
 export async function placeOrderAction(
   items: { productId: string; quantity: number }[],
   formData: FormData
-) {
+): Promise<PlaceOrderResult> {
   try {
     await connection();
 
@@ -20,27 +43,70 @@ export async function placeOrderAction(
       return { error: "Your cart is empty" };
     }
 
-    const name = (formData.get("name") as string)?.trim();
-    const phone = (formData.get("phone") as string)?.trim();
-    const address = (formData.get("address") as string)?.trim();
-    const city = (formData.get("city") as string)?.trim();
-    const email = (formData.get("email") as string)?.trim() || null;
+    const fieldErrors: {
+      name?: string;
+      phone?: string;
+      address?: string;
+      city?: string;
+      email?: string;
+    } = {};
 
-    if (!name || !phone || !address || !city) {
-      return { error: "Please fill in all required shipping details" };
+    const rawName = (formData.get("name") as string) || "";
+    const rawPhone = (formData.get("phone") as string) || "";
+    const rawAddress = (formData.get("address") as string) || "";
+    const rawCity = (formData.get("city") as string) || "";
+    const rawEmail = (formData.get("email") as string) || "";
+
+    const name = trimAndCollapse(rawName);
+    const address = trimAndCollapse(rawAddress);
+    const city = trimAndCollapse(rawCity);
+    const email = rawEmail.trim() || null;
+
+    // Validate Full Name
+    if (!name || name.length < 2) {
+      fieldErrors.name = "Full name must be at least 2 characters";
+    } else if (name.length > NAME_MAX) {
+      fieldErrors.name = `Full name cannot exceed ${NAME_MAX} characters`;
     }
 
-    const cleanPhone = phone.replace(/\D/g, "");
-    if (cleanPhone.length < 10) {
-      return { error: "Phone number must be at least 10 digits" };
+    // Validate Phone (normalized Pakistani mobile)
+    const normalizedPhone = normalizePkPhone(rawPhone);
+    if (!normalizedPhone) {
+      fieldErrors.phone =
+        "Enter a valid Pakistani mobile number (e.g. 0300 1234567)";
     }
 
-    if (email && !email.includes("@")) {
-      return { error: "Please enter a valid email address" };
+    // Validate Address
+    if (!address || address.length < 10) {
+      fieldErrors.address = "Address must be at least 10 characters";
+    } else if (address.length > ADDRESS_MAX) {
+      fieldErrors.address = `Address cannot exceed ${ADDRESS_MAX} characters`;
+    }
+
+    // Validate City
+    if (!city || city.length < 2) {
+      fieldErrors.city = "Please select or enter your city";
+    } else if (city.length > CITY_MAX) {
+      fieldErrors.city = `City cannot exceed ${CITY_MAX} characters`;
+    }
+
+    // Validate Email (optional)
+    if (email && !isValidEmail(email)) {
+      fieldErrors.email = "Please enter a valid email address";
+    }
+
+    if (Object.keys(fieldErrors).length > 0) {
+      const firstErrorMessage = Object.values(fieldErrors)[0];
+      return {
+        error: firstErrorMessage,
+        fieldErrors,
+      };
     }
 
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const payload = items.map((item) => ({
       product_id: item.productId,
@@ -50,7 +116,7 @@ export async function placeOrderAction(
     const { data: result, error } = await supabase.rpc("place_order", {
       p_items: payload,
       p_name: name,
-      p_phone: phone,
+      p_phone: normalizedPhone,
       p_address: address,
       p_city: city,
       p_email: email,
@@ -74,7 +140,8 @@ export async function placeOrderAction(
       isLoggedIn: !!user,
     };
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "An unexpected error occurred";
+    const message =
+      err instanceof Error ? err.message : "An unexpected error occurred";
     return { error: message };
   }
 }

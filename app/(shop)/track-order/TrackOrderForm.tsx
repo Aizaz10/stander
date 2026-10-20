@@ -82,9 +82,12 @@ export function TrackOrderForm() {
                 id="orderNumber"
                 name="orderNumber"
                 type="number"
+                min="1"
+                step="1"
                 required
                 defaultValue={initialOrder}
                 placeholder="e.g. 1001"
+                error={state.fieldErrors?.orderNumber}
               />
             </div>
             <div className="space-y-1.5">
@@ -95,8 +98,10 @@ export function TrackOrderForm() {
                 id="phone"
                 name="phone"
                 type="tel"
+                inputMode="tel"
                 required
                 placeholder="e.g. 03001234567"
+                error={state.fieldErrors?.phone}
               />
             </div>
           </div>
@@ -117,8 +122,8 @@ export function TrackOrderForm() {
         </form>
       </Card>
 
-      {/* Error Message */}
-      {state.error && (
+      {/* General Error Message (e.g. Order not found) */}
+      {state.error && !state.fieldErrors && (
         <div className="p-4 bg-red-50 text-red-700 rounded-2xl border border-red-100 text-sm">
           {state.error}
         </div>

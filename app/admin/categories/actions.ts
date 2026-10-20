@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
 import { revalidatePath } from "next/cache";
+import { CATEGORY_NAME_MAX, CATEGORY_SLUG_MAX } from "@/lib/validation";
 
 async function verifyAdmin() {
   await connection();
@@ -41,8 +42,16 @@ export async function createCategoryAction(data: CategoryActionData) {
       return { error: "Category name is required." };
     }
 
+    if (name.length > CATEGORY_NAME_MAX) {
+      return { error: `Category name cannot exceed ${CATEGORY_NAME_MAX} characters.` };
+    }
+
     if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
       return { error: "Category slug can only contain lowercase letters, numbers, and hyphens." };
+    }
+
+    if (slug.length > CATEGORY_SLUG_MAX) {
+      return { error: `Category slug cannot exceed ${CATEGORY_SLUG_MAX} characters.` };
     }
 
     // Check duplicate name
@@ -102,6 +111,9 @@ export async function updateCategoryAction(id: string, data: Partial<CategoryAct
       if (!name) {
         return { error: "Category name cannot be empty." };
       }
+      if (name.length > CATEGORY_NAME_MAX) {
+        return { error: `Category name cannot exceed ${CATEGORY_NAME_MAX} characters.` };
+      }
       // Check duplicate name
       const { data: existingName } = await supabase
         .from('categories')
@@ -120,6 +132,9 @@ export async function updateCategoryAction(id: string, data: Partial<CategoryAct
       const slug = sanitizeSlug(data.slug);
       if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
         return { error: "Category slug can only contain lowercase letters, numbers, and hyphens." };
+      }
+      if (slug.length > CATEGORY_SLUG_MAX) {
+        return { error: `Category slug cannot exceed ${CATEGORY_SLUG_MAX} characters.` };
       }
       // Check duplicate slug
       const { data: existingSlug } = await supabase
