@@ -7,7 +7,7 @@
 export const SHIPPING_FEE_KARACHI = 250;
 export const SHIPPING_FEE_OTHER = 350;
 
-export const WHATSAPP_NUMBER = "923001234567"; // TODO: replace with the real WhatsApp number, international format, digits only, no "+"
+export const WHATSAPP_NUMBER = "923222352516"; 
 
 export const PAKISTAN_CITIES = [
   "Karachi",
