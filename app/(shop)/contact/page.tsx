@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { ContactForm } from "./ContactForm";
+import { WhatsAppIcon } from "@/components/shop/WhatsAppIcon";
+import { getWhatsAppLink, formatWhatsAppNumber } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -8,6 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  const formattedPhone = formatWhatsAppNumber();
+  const whatsAppHref = getWhatsAppLink("Hi Stander Trader! I have a question.");
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-5xl">
       <div className="text-center max-w-2xl mx-auto mb-12">
@@ -39,8 +44,27 @@ export default function ContactPage() {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 text-sm mb-1">Call Support</h3>
-              <p className="text-sm text-gray-500">+1 (800) 555-0199</p>
-              <p className="text-xs text-gray-400 mt-1">Toll-free customer line</p>
+              <p className="text-sm text-gray-500">{formattedPhone}</p>
+              <p className="text-xs text-gray-400 mt-1">Direct customer line</p>
+            </div>
+          </div>
+
+          <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-start gap-4">
+            <div className="w-10 h-10 rounded-xl bg-[#25D366]/10 text-[#25D366] flex items-center justify-center shrink-0">
+              <WhatsAppIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 text-sm mb-1">WhatsApp</h3>
+              <p className="text-sm text-gray-500 mb-1">{formattedPhone}</p>
+              <a
+                href={whatsAppHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#25D366] hover:underline"
+              >
+                <WhatsAppIcon className="w-3.5 h-3.5 shrink-0" />
+                <span>Chat on WhatsApp</span>
+              </a>
             </div>
           </div>
 

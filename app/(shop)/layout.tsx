@@ -5,6 +5,7 @@ import {
   NavbarCategories,
   NavbarCategoriesFallback,
 } from "@/components/layout/NavbarCategories";
+import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButton";
 
 export default function ShopLayout({
   children,
@@ -22,6 +23,7 @@ export default function ShopLayout({
       />
       <main className="flex-grow">{children}</main>
       <Footer />
+      <WhatsAppFloatingButton />
     </div>
   );
 }

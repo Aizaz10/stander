@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { WhatsAppIcon } from "@/components/shop/WhatsAppIcon";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 import { formatPrice } from "@/lib/utils";
 import { SITE_URL } from "@/lib/site";
 
@@ -141,9 +143,29 @@ export default async function ProductDetails({ paramsPromise }: { paramsPromise:
             </div>
           </div>
 
-          <div className="border-t border-gray-100 pt-6">
-            <AddToCartButton product={product} />
-          </div>
+          {(() => {
+            const isOutOfStock = (product.stock ?? 0) <= 0;
+            const productUrl = `${SITE_URL}/product/${product.slug}`;
+            const whatsAppMessage = isOutOfStock
+              ? `Hi Stander Trader! Is ${product.name} available? Link: ${productUrl}`
+              : `Hi Stander Trader! I want to order: ${product.name} (${formatPrice(product.price)}). Link: ${productUrl}`;
+            const whatsAppLink = getWhatsAppLink(whatsAppMessage);
+
+            return (
+              <div className="border-t border-gray-100 pt-6 space-y-3">
+                <AddToCartButton product={product} />
+                <a
+                  href={whatsAppLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-12 flex items-center justify-center gap-2.5 px-6 rounded-xl font-semibold text-sm border-2 border-[#25D366] text-[#25D366] bg-transparent hover:bg-[#25D366] hover:text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+                >
+                  <WhatsAppIcon className="w-5 h-5 shrink-0" />
+                  <span>Order on WhatsApp</span>
+                </a>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

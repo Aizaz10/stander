@@ -4,6 +4,8 @@ import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { CurrentYear } from "./CurrentYear";
 import { NewsletterForm } from "./NewsletterForm";
+import { WhatsAppIcon } from "@/components/shop/WhatsAppIcon";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 function FooterShopLinksFallback() {
   return (
@@ -103,6 +105,17 @@ export function Footer() {
               >
                 Shipping Returns
               </Link>
+            </li>
+            <li>
+              <a
+                href={getWhatsAppLink("Hi Stander Trader! I have a question.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+              >
+                <WhatsAppIcon className="w-4 h-4 text-[#25D366] shrink-0" />
+                <span>Chat on WhatsApp</span>
+              </a>
             </li>
           </ul>
         </div>
