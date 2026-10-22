@@ -35,7 +35,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Can I cancel or modify an order after placing it?",
-        a: "Orders in 'Pending' status can be modified or cancelled by contacting our support team immediately. Once an order is 'Shipped', changes cannot be made.",
+        a: "Orders in 'Pending' status can be modified or cancelled by contacting our support team on WhatsApp immediately. Once an order is 'Shipped', changes cannot be made.",
       },
     ],
   },

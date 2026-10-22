@@ -24,7 +24,7 @@
 - **Shopping Cart**: Client-side Zustand cart with local persistence, item quantity adjustments, and real-time subtotal calculation.
 - **Checkout & Orders**: Frictionless checkout with Cash on Delivery (COD) payment method, atomic RPC transactions, and real-time order confirmation.
 - **Order Tracking**: Customer order history with tracking statuses (`pending`, `confirmed`, `shipped`, `delivered`, `cancelled`).
-- **Static & Information Pages**: Dedicated `/contact` (interactive contact form), `/faq` (categorized questions), and `/shipping-returns` (delivery rates and 30-day warranty policy).
+- **Static & Information Pages**: Dedicated `/contact` (direct WhatsApp support and order tracking help), `/faq` (categorized questions), and `/shipping-returns` (delivery rates and 30-day warranty policy).
 - **SEO & Metadata**: Dynamic OpenGraph tags, title templates (`%s | Stander`), and SVG favicon (`app/icon.svg`).
 
 ### Admin Dashboard (`/admin`)

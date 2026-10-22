@@ -3,7 +3,6 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { CurrentYear } from "./CurrentYear";
-import { NewsletterForm } from "./NewsletterForm";
 import { WhatsAppIcon } from "@/components/shop/WhatsAppIcon";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 
@@ -103,26 +102,25 @@ export function Footer() {
                 href="/shipping-returns"
                 className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               >
-                Shipping Returns
+                Shipping &amp; Returns
               </Link>
-            </li>
-            <li>
-              <a
-                href={getWhatsAppLink("Hi Stander Trader! I have a question.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
-              >
-                <WhatsAppIcon className="w-4 h-4 text-[#25D366] shrink-0" />
-                <span>Chat on WhatsApp</span>
-              </a>
             </li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold mb-4 text-foreground">Newsletter</h4>
-          <p className="text-sm text-gray-500 mb-2">Subscribe for updates and deals.</p>
-          <NewsletterForm />
+          <h4 className="font-semibold mb-4 text-foreground">Need help?</h4>
+          <p className="text-sm text-gray-500 mb-3">
+            Questions about an order or product?
+          </p>
+          <a
+            href={getWhatsAppLink("Hi Stander Trader! I have a question.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#25D366] text-white text-sm font-medium hover:bg-[#20ba5a] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+          >
+            <WhatsAppIcon className="w-4 h-4 shrink-0" />
+            <span>Chat on WhatsApp</span>
+          </a>
         </div>
       </div>
       <div className="container mx-auto px-4 mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">

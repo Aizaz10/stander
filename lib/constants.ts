@@ -8,6 +8,7 @@ export const SHIPPING_FEE_KARACHI = 250;
 export const SHIPPING_FEE_OTHER = 350;
 
 export const WHATSAPP_NUMBER = "923222352516"; 
+export const SUPPORT_HOURS = "Monday to Saturday, 10:00 AM to 8:00 PM"; // TODO: replace with the real support hours
 
 export const PAKISTAN_CITIES = [
   "Karachi",

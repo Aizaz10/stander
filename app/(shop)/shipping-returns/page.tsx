@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Truck, RotateCcw, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { getWhatsAppLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Shipping & Returns",
@@ -96,7 +97,7 @@ export default function ShippingReturnsPage() {
 
           <h3 className="font-semibold text-gray-900 mb-3 text-sm">How to return an item:</h3>
           <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 mb-6">
-            <li>Visit your <Link href="/orders" className="text-primary hover:underline">My Orders</Link> page or email <span className="font-mono text-xs">support@stander.store</span>.</li>
+            <li>Visit your <Link href="/orders" className="text-primary hover:underline">My Orders</Link> page or message us on <a href={getWhatsAppLink("Hi Stander Trader! I would like to request a return.")} target="_blank" rel="noopener noreferrer" className="text-[#25D366] font-medium hover:underline">WhatsApp</a>.</li>
             <li>Provide your order number and reason for return.</li>
             <li>Attach the provided prepaid return label and drop off the package at any authorized shipping carrier.</li>
           </ol>
