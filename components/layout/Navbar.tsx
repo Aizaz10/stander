@@ -2,7 +2,7 @@
 
 import { useCartStore } from "@/store/cartStore";
 import Link from 'next/link';
-import { Search, ShoppingCart, User, LogOut, Package, Settings, ChevronDown, Menu, X, HelpCircle, PhoneCall, ShieldCheck, PackageSearch } from 'lucide-react';
+import { Search, ShoppingCart, User, LogOut, Package, Settings, ChevronDown, Menu, X, HelpCircle, PhoneCall, Truck, PackageSearch } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -355,8 +355,8 @@ export function Navbar({ categoryLinks }: { categoryLinks?: React.ReactNode } = 
               href="/shipping-returns"
               className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-gray-50 hover:text-primary transition-colors text-xs"
             >
-              <ShieldCheck className="w-4 h-4 text-gray-400" />
-              Shipping & Returns
+              <Truck className="w-4 h-4 text-gray-400" />
+              Shipping & Delivery
             </Link>
           </div>
         </div>

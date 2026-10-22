@@ -102,7 +102,7 @@ export function Footer() {
                 href="/shipping-returns"
                 className="hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               >
-                Shipping &amp; Returns
+                Shipping &amp; Delivery
               </Link>
             </li>
           </ul>

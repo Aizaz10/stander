@@ -34,7 +34,7 @@ export async function generateMetadata({
       ? `Buy ${product.name} by ${product.brand} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`
       : categoryName
       ? `Buy ${product.name} in ${categoryName} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`
-      : `Buy ${product.name} at Stander Trader with warranty and fast delivery across Pakistan.`;
+      : `Buy ${product.name} at Stander Trader. Enjoy best prices and fast delivery across Pakistan.`;
 
     const description = product.description && product.description.trim()
       ? product.description.trim().slice(0, 155)
