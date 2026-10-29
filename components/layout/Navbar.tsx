@@ -4,6 +4,7 @@ import { useCartStore } from "@/store/cartStore";
 import Link from 'next/link';
 import { Search, ShoppingCart, User, LogOut, Package, Settings, ChevronDown, Menu, X, HelpCircle, PhoneCall, Truck, PackageSearch } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { SearchBox } from "./SearchBox";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { type User as SupabaseUser } from "@supabase/supabase-js";
@@ -120,15 +121,7 @@ export function Navbar({ categoryLinks }: { categoryLinks?: React.ReactNode } = 
         
         {/* Desktop Search Bar */}
         <div className="hidden md:flex flex-1 max-w-md mx-8">
-          <form action="/shop" method="GET" className="relative w-full">
-            <input 
-              type="text" 
-              name="q"
-              placeholder="Search gadgets, laptops, audio..." 
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 pl-10 pr-4 py-2 text-sm outline-none transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-          </form>
+          <SearchBox />
         </div>
 
         {/* Right Nav Actions */}
@@ -239,16 +232,11 @@ export function Navbar({ categoryLinks }: { categoryLinks?: React.ReactNode } = 
       {/* Expandable Mobile Search Bar */}
       {mobileSearchOpen && (
         <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 shadow-sm">
-          <form action="/shop" method="GET" className="relative w-full">
-            <input 
-              type="text" 
-              name="q"
-              autoFocus
-              placeholder="Search gadgets, laptops, audio..." 
-              className="w-full rounded-xl border border-gray-200 bg-gray-50 pl-10 pr-4 py-2.5 text-sm outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary-light"
-            />
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          </form>
+          <SearchBox
+            autoFocus
+            isMobile
+            onSelectOrSubmit={() => setMobileSearchOpen(false)}
+          />
         </div>
       )}
 
