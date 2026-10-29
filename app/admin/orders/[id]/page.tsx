@@ -8,6 +8,7 @@ import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package, Mail } f
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { OrderStatusUpdater } from "@/components/admin/OrderStatusUpdater";
+import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { formatPrice } from "@/lib/utils";
 
 interface OrderItem {
@@ -263,6 +264,24 @@ async function OrderDetailContent({ id }: { id: string }) {
               </div>
             </div>
           </Card>
+        </div>
+      </div>
+
+      {/* Danger Zone */}
+      <div className="rounded-2xl border border-red-200 bg-red-50/30 p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-base font-bold text-red-900">Danger Zone</h3>
+            <p className="text-xs text-red-700/80 mt-0.5">
+              Delete this order permanently. This action cannot be undone.
+            </p>
+          </div>
+          <DeleteOrderButton
+            orderId={order.id}
+            orderNumber={displayId}
+            status={order.status}
+            variant="outline"
+          />
         </div>
       </div>
     </div>

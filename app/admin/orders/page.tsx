@@ -7,8 +7,9 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, CheckCircle2 } from "lucide-react";
 import { OrderFilters, OrderFiltersSkeleton } from "@/components/admin/OrderFilters";
+import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { formatPrice } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ interface OrdersSearchParams {
   status?: string;
   q?: string;
   page?: string;
+  deleted?: string;
 }
 
 function getStatusBadge(status: string) {
@@ -96,6 +98,23 @@ async function OrdersList({
 
   return (
     <div>
+      {searchParams.deleted && (
+        <div className="mb-6 flex items-center justify-between p-4 bg-green-50 border border-green-200 text-green-900 rounded-2xl text-sm">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+            <span className="font-medium">
+              Order #{searchParams.deleted} deleted
+            </span>
+          </div>
+          <Link
+            href="/admin/orders"
+            className="text-green-700 hover:text-green-950 text-xs font-semibold px-2 py-1 rounded-lg hover:bg-green-100/60 transition-colors"
+          >
+            Dismiss
+          </Link>
+        </div>
+      )}
+
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
@@ -160,11 +179,19 @@ async function OrdersList({
                         {new Date(order.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <Link href={`/admin/orders/${order.id}`}>
-                          <Button size="sm" variant="outline" className="gap-1.5 text-xs">
-                            <Eye className="w-3.5 h-3.5" /> View
-                          </Button>
-                        </Link>
+                        <div className="flex items-center justify-end gap-2">
+                          <Link href={`/admin/orders/${order.id}`}>
+                            <Button size="sm" variant="outline" className="gap-1.5 text-xs">
+                              <Eye className="w-3.5 h-3.5" /> View
+                            </Button>
+                          </Link>
+                          <DeleteOrderButton
+                            orderId={order.id}
+                            orderNumber={displayId}
+                            status={order.status}
+                            variant="icon"
+                          />
+                        </div>
                       </td>
                     </tr>
                   );
@@ -172,7 +199,12 @@ async function OrdersList({
               ) : (
                 <tr>
                   <td colSpan={9} className="px-6 py-12 text-center text-gray-500">
-                    No orders found matching the criteria.
+                    <p className="font-medium text-gray-600">No orders found.</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {q || (status && status !== "all")
+                        ? "No orders found matching the criteria."
+                        : "When customers place orders, they will appear here."}
+                    </p>
                   </td>
                 </tr>
               )}
