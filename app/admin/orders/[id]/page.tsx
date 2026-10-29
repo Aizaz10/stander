@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package, Mail } from "lucide-react";
+import { ArrowLeft, User, Phone, MapPin, CreditCard, Calendar, Package, Mail, Printer } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { OrderStatusUpdater } from "@/components/admin/OrderStatusUpdater";
@@ -111,12 +111,24 @@ async function OrderDetailContent({ id }: { id: string }) {
           </div>
         </div>
 
-        {/* Update Status Control */}
-        <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 md:w-80">
-          <p className="text-xs font-semibold uppercase text-gray-500 mb-2">
-            Change Order Status
-          </p>
-          <OrderStatusUpdater orderId={order.id} currentStatus={order.status} />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <Link
+            href={`/admin/orders/${order.id}/slip?print=1`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary bg-white px-4 py-2.5 text-sm font-semibold text-primary hover:bg-primary-light transition-colors shadow-sm shrink-0 self-start sm:self-center"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Print Slip</span>
+          </Link>
+
+          {/* Update Status Control */}
+          <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 md:w-80">
+            <p className="text-xs font-semibold uppercase text-gray-500 mb-2">
+              Change Order Status
+            </p>
+            <OrderStatusUpdater orderId={order.id} currentStatus={order.status} />
+          </div>
         </div>
       </div>
 

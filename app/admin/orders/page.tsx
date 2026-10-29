@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-import { Eye, CheckCircle2 } from "lucide-react";
+import { Eye, CheckCircle2, Printer } from "lucide-react";
 import { OrderFilters, OrderFiltersSkeleton } from "@/components/admin/OrderFilters";
 import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { formatPrice } from "@/lib/utils";
@@ -179,7 +179,17 @@ async function OrdersList({
                         {new Date(order.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-1.5 sm:gap-2">
+                          <Link
+                            href={`/admin/orders/${order.id}/slip?print=1`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Print slip for order #${displayId}`}
+                            title={`Print slip for order #${displayId}`}
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-primary hover:bg-primary-light/40 transition-colors"
+                          >
+                            <Printer className="w-4 h-4" />
+                          </Link>
                           <Link href={`/admin/orders/${order.id}`}>
                             <Button size="sm" variant="outline" className="gap-1.5 text-xs">
                               <Eye className="w-3.5 h-3.5" /> View
