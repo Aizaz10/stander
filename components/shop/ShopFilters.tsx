@@ -22,27 +22,37 @@ export function ShopFilters({ categories = [] }: ShopFiltersProps) {
   const [max, setMax] = useState(searchParams.get("max") || "");
 
   const updateParam = (key: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    // reset page on filter change
-    if (key !== "page") {
-      params.delete("page");
-    }
-    router.push(`${pathname}?${params.toString()}`);
+    const params = new URLSearchParams();
+    const q = searchParams.get("q");
+    if (q) params.set("q", q);
+
+    const categoryVal = key === "category" ? value : currentCategory;
+    if (categoryVal) params.set("category", categoryVal);
+
+    const sortVal = key === "sort" ? value : currentSort;
+    if (sortVal) params.set("sort", sortVal);
+
+    const minVal = key === "min" ? value : searchParams.get("min");
+    if (minVal) params.set("min", minVal);
+
+    const maxVal = key === "max" ? value : searchParams.get("max");
+    if (maxVal) params.set("max", maxVal);
+
+    const queryString = params.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   const handlePriceApply = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
+    const q = searchParams.get("q");
+    if (q) params.set("q", q);
+    if (currentCategory) params.set("category", currentCategory);
+    if (currentSort) params.set("sort", currentSort);
     if (min) params.set("min", min);
-    else params.delete("min");
     if (max) params.set("max", max);
-    else params.delete("max");
-    params.delete("page");
-    router.push(`${pathname}?${params.toString()}`);
+
+    const queryString = params.toString();
+    router.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   const allCategories = [
